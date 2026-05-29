@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karina</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0d'/%3E%3Ctext x='16' y='23' font-family='Helvetica Neue%2C Arial%2C sans-serif' font-size='20' font-weight='600' fill='white' text-anchor='middle'%3EK%3C%2Ftext%3E%3C%2Fsvg%3E" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { max-width: 100%; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #161616;
+      --border:   #2a2a2a;
+      --accent:   #e8c97e;
+      --text:     #f0ede8;
+      --muted:    #888;
+      --font:     'Helvetica Neue', Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(13,13,13,.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 6rem 4rem 5rem;
+      background:
+        linear-gradient(to top, rgba(13,13,13,1) 0%, rgba(13,13,13,.3) 60%, transparent 100%),
+        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&auto=format&fit=crop') center/cover no-repeat;
+    }
+
+    .hero-content { max-width: 700px; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: .75rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title span { color: var(--accent); font-weight: 600; }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .75rem 2rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: .85rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: background .2s, color .2s;
+    }
+
+    .btn:hover { background: var(--accent); color: var(--bg); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .about-image {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      filter: grayscale(20%);
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      font-size: 1rem;
+    }
+
+    .stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── PORTFOLIO GRID ── */
+    #portfolio { border-top: 1px solid var(--border); }
+
+    .grid {
+      columns: 3;
+      column-gap: 6px;
+    }
+
+    .grid-item {
+      break-inside: avoid;
+      margin-bottom: 6px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+    }
+
+    .grid-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .6s ease, filter .4s ease;
+    }
+
+    .grid-item:hover img {
+      transform: scale(1.06);
+      filter: brightness(.45);
+    }
+
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(transparent 40%, rgba(0,0,0,.72));
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .grid-item:hover .grid-overlay { opacity: 1; }
+
+    .grid-overlay h3 {
+      font-size: .95rem;
+      font-weight: 400;
+      margin-bottom: .2rem;
+    }
+
+    .grid-overlay span {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,.96);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lightbox.active { display: flex; }
+
+    #lb-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 88vw;
+      max-height: 92vh;
+    }
+
+    #lb-img {
+      max-width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+    }
+
+    #lb-caption {
+      margin-top: .65rem;
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #lb-close {
+      position: fixed;
+      top: 1.4rem;
+      right: 1.75rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      opacity: .55;
+      transition: opacity .2s;
+      z-index: 201;
+    }
+
+    #lb-close:hover { opacity: 1; }
+
+    #lb-prev, #lb-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(255,255,255,.18);
+      color: var(--text);
+      font-size: 1.8rem;
+      width: 3rem;
+      height: 3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .2s, background .2s;
+      line-height: 1;
+    }
+
+    #lb-prev { left: 1.25rem; }
+    #lb-next { right: 1.25rem; }
+
+    #lb-prev:hover, #lb-next:hover {
+      border-color: var(--accent);
+      background: rgba(255,255,255,.05);
+    }
+
+    #lb-counter {
+      position: fixed;
+      top: 1.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: .72rem;
+      letter-spacing: .18em;
+      color: var(--muted);
+    }
+
+    /* ── SERVICES ── */
+    #services { border-top: 1px solid var(--border); background: var(--surface); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .service-card {
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      transition: border-color .2s;
+    }
+
+    .service-card:hover { border-color: var(--accent); }
+
+    .service-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: .75rem;
+    }
+
+    .service-card p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { border-top: 1px solid var(--border); }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .testimonial {
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .testimonial p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      max-width: 380px;
+    }
+
+    .contact-detail {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-detail a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      transition: color .2s;
+    }
+
+    .contact-detail a:hover { color: var(--accent); }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .social-links a:hover { color: var(--accent); }
+
+    form { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+
+    label {
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .85rem 1rem;
+      font-size: .95rem;
+      font-family: var(--font);
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+    select option { background: var(--surface); }
+
+    textarea { resize: vertical; min-height: 140px; }
+
+    button[type="submit"] {
+      padding: .85rem 2.5rem;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-size: .85rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-family: var(--font);
+      cursor: pointer;
+      align-self: flex-start;
+      transition: opacity .2s;
+    }
+
+    button[type="submit"]:hover { opacity: .85; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-tag {
+      animation: heroFadeUp .7s ease-out both;
+      animation-delay: .15s;
+    }
+
+    .hero-title {
+      animation: heroFadeUp .9s ease-out both;
+      animation-delay: .32s;
+    }
+
+    .hero-desc {
+      animation: heroFadeUp .75s ease-out both;
+      animation-delay: .55s;
+    }
+
+    .hero-content .btn {
+      animation: heroFadeUp .7s ease-out both;
+      animation-delay: .75s;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s ease-out, transform .7s ease-out;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tag, .hero-title, .hero-desc, .hero-content .btn {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+      .fade-up { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 201;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--text);
+      transition: transform .35s ease, opacity .25s ease;
+      transform-origin: center;
+    }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── MOBILE OVERLAY ── */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(13,13,13,.97);
+      backdrop-filter: blur(12px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(100%);
+      transition: transform .4s cubic-bezier(.77,0,.18,1);
+    }
+
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+
+    .nav-overlay .nav-overlay-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-overlay .nav-overlay-links a {
+      font-size: clamp(1.6rem, 7vw, 2.4rem);
+      font-weight: 300;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0;
+      transform: translateX(30px);
+      transition: color .2s, opacity .35s ease, transform .35s ease;
+    }
+
+    .nav-overlay.open .nav-overlay-links a {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .nav-overlay.open .nav-overlay-links li:nth-child(1) a { transition-delay: .12s; }
+    .nav-overlay.open .nav-overlay-links li:nth-child(2) a { transition-delay: .18s; }
+    .nav-overlay.open .nav-overlay-links li:nth-child(3) a { transition-delay: .24s; }
+    .nav-overlay.open .nav-overlay-links li:nth-child(4) a { transition-delay: .30s; }
+    .nav-overlay.open .nav-overlay-links li:nth-child(5) a { transition-delay: .36s; }
+
+    .nav-overlay .nav-overlay-links a:hover { color: var(--accent); }
+
+    /* ── SCROLL-TO-TOP ── */
+    #scroll-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 14px rgba(0,0,0,.22);
+      color: #0d0d0d;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .35s ease, transform .35s ease, box-shadow .25s ease;
+      pointer-events: none;
+      z-index: 90;
+    }
+
+    #scroll-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #scroll-top:hover {
+      box-shadow: 0 6px 22px rgba(0,0,0,.32);
+      transform: translateY(-3px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #scroll-top { transition: opacity .2s; transform: none !important; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-image { max-height: 420px; width: 100%; }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+
+      .grid { columns: 2; }
+
+      .services-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      #hero { padding: 5rem 1.5rem 3.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-overlay { display: flex; }
+      .grid { columns: 1; }
+      .stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">Karina</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#testimonials">Clients</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE OVERLAY -->
+  <div id="nav-overlay" class="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation">
+    <ul class="nav-overlay-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#testimonials">Clients</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <span class="hero-tag">Photographer &amp; Filmmaker</span>
+      <h1 class="hero-title">Capturing <span>moments</span><br>that last forever.</h1>
+      <p class="hero-desc">
+        Available for portraits, weddings, commercial campaigns, and short-film production worldwide.
+      </p>
+      <a class="btn" href="#portfolio">View Work</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <img
+      class="about-image"
+      src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&auto=format&fit=crop"
+      alt="Karina — photographer portrait"
+    />
+    <div class="about-text">
+      <p class="section-label">About</p>
+      <h2 class="section-title">I tell stories<br>through light.</h2>
+      <p>
+        Hi, I'm Karina. Based in New York, I've spent the last eight years chasing light across five continents — from misty mountain ranges to sun-drenched cityscapes. My work blends documentary authenticity with cinematic craftsmanship.
+      </p>
+      <p>
+        Whether it's an intimate elopement, a brand campaign, or an experimental short film, I bring the same obsessive attention to mood, composition, and detail to every frame.
+      </p>
+      <div class="stats">
+        <div>
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Years</div>
+        </div>
+        <div>
+          <div class="stat-num">340+</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div>
+          <div class="stat-num">5</div>
+          <div class="stat-label">Continents</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <p class="section-label">Selected Work</p>
+    <h2 class="section-title">Portfolio</h2>
+
+    <div class="grid">
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&auto=format&fit=crop" alt="Wedding ceremony arch" style="aspect-ratio:16/9" />
+        <div class="grid-overlay"><h3>The Ceremony</h3><span>Wedding</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&auto=format&fit=crop" alt="Bride portrait" style="aspect-ratio:2/3" />
+        <div class="grid-overlay"><h3>The Bride</h3><span>Portrait</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&auto=format&fit=crop" alt="Bridal bouquet" style="aspect-ratio:3/4" />
+        <div class="grid-overlay"><h3>In Bloom</h3><span>Details</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&auto=format&fit=crop" alt="Wedding rings" style="aspect-ratio:1/1" />
+        <div class="grid-overlay"><h3>Gold Bands</h3><span>Details</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&auto=format&fit=crop" alt="Outdoor ceremony" style="aspect-ratio:4/3" />
+        <div class="grid-overlay"><h3>Elena &amp; Marco</h3><span>Wedding</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop" alt="Getting ready" style="aspect-ratio:2/3" />
+        <div class="grid-overlay"><h3>Getting Ready</h3><span>Behind the Scenes</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b4b0de8?w=800&auto=format&fit=crop" alt="First dance" style="aspect-ratio:3/2" />
+        <div class="grid-overlay"><h3>First Dance</h3><span>Wedding</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop" alt="Wedding vows" style="aspect-ratio:3/4" />
+        <div class="grid-overlay"><h3>The Vows</h3><span>Wedding</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&auto=format&fit=crop" alt="Wedding reception" style="aspect-ratio:4/3" />
+        <div class="grid-overlay"><h3>The Reception</h3><span>Wedding</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&auto=format&fit=crop" alt="Champagne toast" style="aspect-ratio:1/1" />
+        <div class="grid-overlay"><h3>Candid Joy</h3><span>Wedding</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop" alt="Golden hour portrait" style="aspect-ratio:2/3" />
+        <div class="grid-overlay"><h3>Golden Hour</h3><span>Portrait</span></div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1530023853536-25db3e5e7b89?w=800&auto=format&fit=crop" alt="Wedding celebration" style="aspect-ratio:16/9" />
+        <div class="grid-overlay"><h3>Celebration</h3><span>Wedding</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <p class="section-label">What I Offer</p>
+    <h2 class="section-title">Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">◈</div>
+        <h3>Portrait &amp; Editorial</h3>
+        <p>Individual, couple, and family portraits crafted with directorial intention. Editorial-ready images for press kits, magazines, and social media.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">◇</div>
+        <h3>Wedding &amp; Events</h3>
+        <p>Full-day coverage with a documentary eye. Candid moments, cinematic ceremony edits, and optional same-day highlight reels.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">▷</div>
+        <h3>Film &amp; Video Production</h3>
+        <p>Short-form commercial content, brand films, and narrative short films. Color-graded to industry standards with original score licensing available.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <p class="section-label">Kind Words</p>
+    <h2 class="section-title">Client Stories</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <p>"Working with Karina was effortless. She captured emotions we didn't even know we were feeling. Our wedding gallery left us speechless — every frame tells a story."</p>
+        <span class="testimonial-author">— Sofia &amp; Luca, Wedding Clients</span>
+      </div>
+      <div class="testimonial">
+        <p>"We hired Karina for our spring campaign and she completely elevated our brand. The images are stunning, the delivery was fast, and she was an absolute pleasure on set."</p>
+        <span class="testimonial-author">— Maison Verte, Fashion Brand</span>
+      </div>
+      <div class="testimonial">
+        <p>"Karina shot the short film we'd been dreaming about for years. Her visual language brought our script to life in ways we never anticipated."</p>
+        <span class="testimonial-author">— Narrative Studio, Director</span>
+      </div>
+      <div class="testimonial">
+        <p>"The portrait session was so comfortable. Karina made me feel completely at ease and the final images are the best photos ever taken of me. Truly."</p>
+        <span class="testimonial-author">— Amara D., Portrait Client</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-title">Let's create<br>something beautiful.</h2>
+      <p>
+        Available for bookings worldwide. Currently accepting projects for late 2026 and beyond. Response time is typically within 24 hours.
+      </p>
+      <div class="contact-detail">
+        <a href="mailto:hello@karinaportfolio.com">hello@karinaportfolio.com</a>
+        <a href="tel:+12125550199">+1 (212) 555-0199</a>
+      </div>
+      <div class="social-links">
+        <a href="#">Instagram</a>
+        <a href="#">Vimeo</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your full name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" required />
+      </div>
+      <div class="form-group">
+        <label for="service">Service</label>
+        <select id="service" name="service">
+          <option value="">Select a service…</option>
+          <option>Portrait &amp; Editorial</option>
+          <option>Wedding &amp; Events</option>
+          <option>Film &amp; Video Production</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell me about your project, date, and location…"></textarea>
+      </div>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>&copy; 2026 Karina. All rights reserved.</span>
+    <span>Photography &amp; Film — New York</span>
+  </footer>
+
+  <!-- SCROLL TO TOP -->
+  <button id="scroll-top" aria-label="Back to top">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+      <path d="M7.5 12V3M7.5 3L3 7.5M7.5 3l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- HAMBURGER MENU -->
+  <script>
+    (function () {
+      var btn     = document.querySelector('.nav-hamburger');
+      var overlay = document.getElementById('nav-overlay');
+
+      function openMenu() {
+        btn.classList.add('open');
+        overlay.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', 'Close menu');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        btn.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', function () {
+        overlay.classList.contains('open') ? closeMenu() : openMenu();
+      });
+
+      overlay.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) closeMenu();
+      });
+    })();
+  </script>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button id="lb-close" aria-label="Close">&times;</button>
+    <button id="lb-prev" aria-label="Previous">&#8249;</button>
+    <div id="lb-content">
+      <img id="lb-img" src="" alt="" />
+      <p id="lb-caption"></p>
+    </div>
+    <button id="lb-next" aria-label="Next">&#8250;</button>
+    <div id="lb-counter"></div>
+  </div>
+
+  <script>
+    (function () {
+      var items   = Array.from(document.querySelectorAll('.grid-item'));
+      var lb      = document.getElementById('lightbox');
+      var lbImg   = document.getElementById('lb-img');
+      var lbCap   = document.getElementById('lb-caption');
+      var lbCtr   = document.getElementById('lb-counter');
+      var current = 0;
+
+      var photos = items.map(function (item) {
+        var img = item.querySelector('img');
+        return {
+          src:     img.src.replace(/w=\d+/, 'w=1600'),
+          alt:     img.alt,
+          caption: (item.querySelector('.grid-overlay h3') || {}).textContent || ''
+        };
+      });
+
+      function render() {
+        lbImg.src          = photos[current].src;
+        lbImg.alt          = photos[current].alt;
+        lbCap.textContent  = photos[current].caption;
+        lbCtr.textContent  = (current + 1) + ' – ' + photos.length;
+      }
+
+      function open(index) {
+        current = (index + photos.length) % photos.length;
+        render();
+        lb.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('lb-close').focus();
+      }
+
+      function close() {
+        lb.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function prev() { current = (current - 1 + photos.length) % photos.length; render(); }
+      function next() { current = (current + 1) % photos.length; render(); }
+
+      items.forEach(function (item, i) {
+        item.addEventListener('click', function () { open(i); });
+      });
+
+      document.getElementById('lb-close').addEventListener('click', close);
+      document.getElementById('lb-prev').addEventListener('click', prev);
+      document.getElementById('lb-next').addEventListener('click', next);
+
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+
+      document.addEventListener('keydown', function (e) {
+        if (!lb.classList.contains('active')) return;
+        if (e.key === 'Escape')     close();
+        if (e.key === 'ArrowLeft')  prev();
+        if (e.key === 'ArrowRight') next();
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var selectors = [
+        '.section-label',
+        '.section-title',
+        '.about-image',
+        '.about-text > p',
+        '.stats',
+        '.grid-item',
+        '.service-card',
+        '.testimonial',
+        '.contact-info > p',
+        '.contact-detail',
+        '.social-links',
+        '.form-group',
+        'button[type="submit"]'
+      ];
+
+      selectors.forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el) {
+          el.classList.add('fade-up');
+        });
+      });
+
+      // Gentle stagger for grouped items
+      function stagger(sel, step) {
+        document.querySelectorAll(sel).forEach(function (el, i) {
+          el.style.transitionDelay = (i * step).toFixed(2) + 's';
+        });
+      }
+      stagger('.grid-item',    0.06);
+      stagger('.service-card', 0.10);
+      stagger('.testimonial',  0.09);
+      stagger('.form-group',   0.06);
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -28px 0px' });
+
+      document.querySelectorAll('.fade-up').forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+
+    (function () {
+      var sections = [
+        { id: 'hero',      title: 'Karina' },
+        { id: 'about',     title: 'About — Karina' },
+        { id: 'portfolio', title: 'Gallery — Karina' },
+        { id: 'contact',   title: 'Contact — Karina' }
+      ].map(function (s) {
+        return { el: document.getElementById(s.id), title: s.title };
+      }).filter(function (s) { return s.el; });
+
+      function updateTitle() {
+        var mid = window.scrollY + window.innerHeight * 0.45;
+        var active = sections[0];
+        sections.forEach(function (s) {
+          if (s.el.offsetTop <= mid) active = s;
+        });
+        if (document.title !== active.title) document.title = active.title;
+      }
+
+      window.addEventListener('scroll', updateTitle, { passive: true });
+      updateTitle();
+    })();
+
+    (function () {
+      var btn = document.getElementById('scroll-top');
+
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+
+      btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+
+</body>
+</html>
